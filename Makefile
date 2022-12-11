@@ -16,13 +16,13 @@ OBJ = obj
 INC = include
 BIN = bin
 #ADICIONAR NOS OBJETOS O QUE DEVE SER RASTREADO DE MUDANCA:
-OBJS = $(OBJ)/main.o
+OBJS = $(OBJ)/main.o $(OBJ)/AVLDic.o $(OBJ)/HashDic.o
 #ADICIONAR NOS HEADERS OS INCLUDES NECESSARIOS PARA COMPILACAO:
-HDRS = $(INC)/msgassert.h
+HDRS = $(INC)/msgAssert.h $(INC)/HashDic.hpp $(INC)/AVLDic.hpp $(INC)/Dicionario.hpp
 CPFLAGS = -Wall -c -I$(INC)
 CXXFLAGS = -std=c++11 -g -Wall
 
-EXE = $(BIN)/quicksort
+EXE = $(BIN)/dictionary
 
 all:  $(EXE)
 
@@ -31,16 +31,18 @@ test: $(TEST)
 
 
 $(BIN)/dictionary: $(OBJS)
-	$(CPP) $(CXXFLAGS) -pg -I$(INC) -o $(BIN)/quicksort $(OBJS) $(LIBS) 
+	$(CPP) $(CXXFLAGS) -pg -I$(INC) -o $(BIN)/dictionary $(OBJS) $(LIBS) 
 
 # Formulas para os objetos:
 
 $(OBJ)/main.o: $(HDRS) $(SRC)/main.cpp
 	$(CPP) $(CPFLAGS) -o $(OBJ)/main.o $(SRC)/main.cpp
 
-$(OBJ)/recQuicksort.o: $(HDRS) $(SRC)/recQuicksort.cpp
-	$(CPP) $(CPFLAGS) -o $(OBJ)/recQuicksort.o $(SRC)/recQuicksort.cpp
+$(OBJ)/AVLDic.o: $(HDRS) $(SRC)/AVLDic.cpp
+	$(CPP) $(CPFLAGS) -o $(OBJ)/AVLDic.o $(SRC)/AVLDic.cpp
 
+$(OBJ)/HashDic.o: $(HDRS) $(SRC)/HashDic.cpp
+	$(CPP) $(CPFLAGS) -o $(OBJ)/HashDic.o $(SRC)/HashDic.cpp
 
 
 	
