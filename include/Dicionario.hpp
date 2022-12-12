@@ -1,7 +1,6 @@
 #include <string>
 
-
-
+//Implementacao de uma lista encadeada base para ser instanciada com tipos diversos.
 template <typename T>
 class ListaBase{
 	public:
@@ -75,8 +74,6 @@ class ListaBase{
 				ultimo_=iterator;
 			}
 		}
-
-
 
 	private:
 		T* primeiro_;
