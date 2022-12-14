@@ -1,26 +1,52 @@
+#ifndef DICIONARIO_H
+#define DICIONARIO_H
+
+#include <iostream>
 #include <string>
+#include "lista.hpp"
 
-//Implementacao de uma lista encadeada base para ser instanciada com tipos diversos.
+/*Declaracao do Significado:*/
+struct Significado{
+	std::string significado_;
+	Significado* prox_;
+};
+
+/*Declaracao de uma Lista encadeada de Significados herdada da classe Template ListaBase*/
 template <typename T>
-class ListaBase{
+class ListaSignificados : public ListaBase<T>{
 	public:
-		ListaBase(){
-			primeiro_=nullptr;
-			ultimo_=nullptr;
+		//Funcao para imprimir os significados na ordem em que foram inseridos na lista.
+		void imprime(){
+			int i=1;
+			Significado* iterator;
+			for(iterator=this->getPrimeiro();iterator!=nullptr;iterator=iterator->prox_){
+				if(iterator->significado_==""){
+					continue;
+				}
+				std::cout<<i++<<". "<<iterator->significado_<<std::endl;
+			}
 		}
+};
 
-		bool vazia(){
-			return !tamanho_;
-		}
+/*Declaracao do verbete. Cada verbete possui uma lista encadeada de significados proprios*/
+struct Verbete{
+    char tipo_;
+    std::string chave_;
+    ListaSignificados<Significado> significados_;
+	Verbete* prox_;
+};
 
-		/*Procura a chave (verbete em si) na lista de verbetes e retorna seu conteudo.
-			Se nao foi encontrado, retorna nullptr.*/
-		T* Pesquisa(std::string chave){
-			T *aux;
-			aux = primeiro_;
+
+/*Declaracao de uma Lista encadeada de Verbetes herdada da classe Template ListaBase*/
+template <typename T>
+class ListaVerbetes : public ListaBase<T>{
+	public:
+		Verbete* Pesquisa(std::string chave, char tipo){
+			Verbete *aux;
+			aux = this->getPrimeiro();
 
 			while(aux!=nullptr){
-				if(aux->chave_==chave)
+				if(aux->chave_==chave && aux->tipo_==tipo)
 					return aux;
 				
 				aux=aux->prox_;
@@ -28,83 +54,27 @@ class ListaBase{
 			return nullptr;
 		}
 
-		void insereFinal(T* it){
-			if(it==nullptr)
-				return;
-			
-			T* novo;
-			novo = it;
-			novo->prox_=nullptr;
-
-			if(vazia()){
-				primeiro_=novo;
-				ultimo_=novo;
-				tamanho_++;
-			}else{
-				ultimo_->prox_ = novo;
-				ultimo_=novo;
-				tamanho_++;
-			}
-		}
-
-		void remove(std::string chave){
-			T* iterator;
-			iterator=primeiro_;
-			//testa se o primeiro elemento eh o elemento a ser removido.
-			//Se nao, comecamos a testar a partir do proximo elemento.
-			if(primeiro_->chave_==chave){
-				primeiro_=primeiro_->prox_;
-				delete primeiro_;
-				tamanho_--;
-				return;
-			}
-
-			//posiciona o iterador na posicao anterior da chave
-			while(iterator->prox_->chave_!=chave && iterator->prox_!=nullptr){
-				iterator=iterator->prox_;
-			}
-			if(iterator->prox_==nullptr){
-				throw("Erro: O verbete com a chave recebida nao esta presente no dicionario!");
-			}
-			T* aux = iterator->prox_;
-			iterator->prox_=aux->prox_;
-			delete aux;
-			tamanho_--;
-			if(iterator->prox_==nullptr){
-				ultimo_=iterator;
-			}
-		}
-
-	private:
-		T* primeiro_;
-		T* ultimo_;
-		int tamanho_;
 };
 
-struct Verbete{
-    char tipo_;
-    std::string chave_;
-    std::string *significados_=nullptr; //TODO: IMPLEMENTAR TAD PARA SIGNIFICADOS
-	Verbete* prox_;
-};
 
+/*Declaracao da classe abstrata Dicionario que implementa uma interface para a criacao dos dicionarios*/
 class Dicionario{
     public:
         Dicionario(int N){
 			tamanho_=N;
         }
-
-        virtual Verbete* pesquisa(std::string chave)=0;
-        virtual void insereVerbete(Verbete * it)=0;
-        // virtual void imprime()=0;
-        // virtual void atualiza(Verbete * it)=0;
-        virtual void removeVerbete(Verbete * it)=0;
-
 		int getTamanho() const {return tamanho_;}
-
-        // virtual ~Dicionario()=0;
+		//funcoes virtuais puras:
+        virtual Verbete* pesquisa(std::string chave, char tipo)=0;
+        virtual void insereVerbete(Verbete * it)=0;
+        virtual void imprime()=0;
+        virtual void atualiza(Verbete * it)=0;
+        virtual void removeVerbete(Verbete * it)=0;
+        virtual ~Dicionario(){};
 
     private:
 		int tamanho_;
-
 };
+
+
+#endif
