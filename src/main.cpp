@@ -9,6 +9,14 @@ using std::cout;
 using std::string;
 using std::endl;
 
+string transformaEmMinuscula(string s){
+	int tam = s.length();
+	for(int i=0;i<tam;i++){
+		s[i]=tolower(s[i]);
+	}
+	return s;
+}
+
 
 int main(int argc, char const *argv[]){
 
@@ -49,6 +57,7 @@ int main(int argc, char const *argv[]){
 
 	while(getline(input,buffer)){
 		try{
+			//instancia novos verbetes e significados para serem preenchidos com o input
 			Verbete *temp = new Verbete;
 			Significado* significado = new Significado;
 			//declara buffers para guardar pedacos do input
@@ -60,6 +69,7 @@ int main(int argc, char const *argv[]){
 			unsigned last = buffer.find(']');
 			//acha o verbete entre os delimitadores
 			verbete = buffer.substr(first+1, last-first-1);
+			verbete=transformaEmMinuscula(verbete);
 			//acha o significado, se houver um
 			if(last+2 > buffer.length()){
 				significado->significado_ = "";
@@ -79,16 +89,15 @@ int main(int argc, char const *argv[]){
 			}
 
 		}
-		catch( const std::exception& e){
+		catch(const std::exception& e){
 			std::cout << e.what() << '\n';
 		}
-	}
-
-
-	dic.imprime();
+	} 
+	
+	dic.imprime(output);
 	cout<<dic.getEntradas()<<endl;
 
 	input.close();
-	
+	output.close();
     return 0;
 }

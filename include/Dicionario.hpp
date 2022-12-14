@@ -16,14 +16,14 @@ template <typename T>
 class ListaSignificados : public ListaBase<T>{
 	public:
 		//Funcao para imprimir os significados na ordem em que foram inseridos na lista.
-		void imprime(){
+		void imprime(std::ostream& out){
 			int i=1;
 			Significado* iterator;
 			for(iterator=this->getPrimeiro();iterator!=nullptr;iterator=iterator->prox_){
 				if(iterator->significado_==""){
 					continue;
 				}
-				std::cout<<i++<<". "<<iterator->significado_<<std::endl;
+				out<<i++<<". "<<iterator->significado_<<std::endl;
 			}
 		}
 };
@@ -67,7 +67,7 @@ class Dicionario{
 		//funcoes virtuais puras:
         virtual Verbete* pesquisa(std::string chave, char tipo)=0;
         virtual void insereVerbete(Verbete * it)=0;
-        virtual void imprime()=0;
+        virtual void imprime(std::ostream& out)=0;
         virtual void atualiza(Verbete * it)=0;
         virtual void removeVerbete(Verbete * it)=0;
         virtual ~Dicionario(){};

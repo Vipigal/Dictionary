@@ -19,7 +19,7 @@ public:
 	//Cabecalho da implementacao das funcoes virtuais puras do dicionario.
 	Verbete* pesquisa(std::string chave, char tipo);
 	void insereVerbete(Verbete* it);
-	void imprime();
+	void imprime(std::ostream& out);
 	void atualiza(Verbete* it);
 	void removeVerbete(Verbete* it);
 	~HashDic();

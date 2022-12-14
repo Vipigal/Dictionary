@@ -1,6 +1,7 @@
 #include "HashDic.hpp"
 #include "recQuicksort.hpp"
-#include <iostream>
+
+#define TROCA(A,B){Verbete C=A;A=B;B=C;}
 
 int HashDic::Hash(std::string chave){
 	int hash = 0;
@@ -55,15 +56,20 @@ Verbete* HashDic::hashParaVetor() const {
 }
 
 
-void HashDic::imprime(){
+void HashDic::imprime(std::ostream& out){
 	Verbete* vetorHash = hashParaVetor();
 	int numeroEntradas=getEntradas();
 	
 	recQuickSort(vetorHash,numeroEntradas);
 
 	for(int i=0;i<numeroEntradas;i++){
-		std::cout<<vetorHash[i].chave_<<"("<<vetorHash[i].tipo_<<")"<<std::endl;
-		vetorHash[i].significados_.imprime();
+		if(i+1<=numeroEntradas&&vetorHash[i].chave_==vetorHash[i+1].chave_){
+			if(vetorHash[i].tipo_>vetorHash[i+1].tipo_){
+				TROCA(vetorHash[i],vetorHash[i+1]);
+			}
+		}
+		out<<vetorHash[i].chave_<<"("<<vetorHash[i].tipo_<<")"<<std::endl;
+		vetorHash[i].significados_.imprime(out);
 	}
 }
 
