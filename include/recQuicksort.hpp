@@ -1,8 +1,7 @@
 #ifndef QUICKSORT_REC
 #define QUICKSORT_REC
 
-#include <string>
-#include "Dicionario.hpp"
+#include "dados.hpp"
 
 
 void Particao(int Esq, int Dir, int *i, int *j, Verbete *A);

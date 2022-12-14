@@ -1,6 +1,8 @@
 #ifndef LISTA_H
 #define LISTA_H
 
+#include <string>
+
 template <class T>
 class ListaBase{
 	public:
@@ -81,17 +83,13 @@ class ListaBase{
 			}
 		}
 
+
 		void removeTudo(){
 			T* iterator = primeiro_;
-			while(!vazia()){
-				
-				if(iterator->prox_==nullptr){
-					delete iterator;
-					break;
-				}
-				T* aux = iterator->prox_;
-				iterator->prox_=aux->prox_;
-				delete aux;
+			while(iterator!=nullptr){
+				T* aux=iterator->prox_;
+				delete iterator;
+				iterator=aux;
 				tamanho_--;
 			}
 		}

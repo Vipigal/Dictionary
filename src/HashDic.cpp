@@ -1,5 +1,5 @@
 #include "HashDic.hpp"
-#include "recQuicksort.hpp"
+
 
 #define TROCA(A,B){Verbete C=A;A=B;B=C;}
 
@@ -80,10 +80,7 @@ void HashDic::atualiza(Verbete* it){
 		throw std::range_error("Erro: O Verbete nao esta presente no dicionario. Voce so pode atualizar campos de um verbete existente!");
 	}
 	//se nao, atualizar o significado do verbete.
-	Significado* iterador;
-	for(iterador=it->significados_.getPrimeiro();iterador!=nullptr;iterador=iterador->prox_){
-		alvo->significados_.insereFinal(iterador);
-	}
+	atualizaSignificado(it->significados_, alvo);
 }
 
 HashDic::~HashDic(){
