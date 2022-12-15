@@ -3,6 +3,7 @@
 #include "msgAssert.h"
 #include <fstream>
 #include "HashDic.hpp"
+#include "AVLDic.hpp"
 #include <sstream>
 
 using std::cout;
@@ -36,25 +37,33 @@ int main(int argc, char const *argv[]){
 		}
 	}
 	//testar se as flags de comando sao validas.
-	std::ifstream input(nomeArquivoEntrada);
+	std::ifstream input("/home/vipigal/Dictionary/input2.txt");
+	// std::ifstream input(nomeArquivoEntrada);
 	erroAssert(input, "Nao foi possivel abrir o arquivo de input! Favor inserir entrada valida com a flag -i");
-	std::ofstream output(nomeArquivoSaida, std::ios_base::app);
-	erroAssert(output, "Nao foi possivel abrir o arquivo de output! Favor inserir entrada valida com a flag -o");
+	// std::ofstream output(nomeArquivoSaida);
+	// erroAssert(output, "Nao foi possivel abrir o arquivo de output! Favor inserir entrada valida com a flag -o");
+	// erroAssert(implementacao=="arv" || implementacao == "hash", "A implementacao desejada deve ser selecionada com a flag -t. Valores validos: hash, arv");
 
+	//Pega o numero de linhas total do arquivo de entrada
 	string buffer;
 	int numeroLinhas=0;
 	while(getline(input,buffer)){
 		numeroLinhas++;
 	}
+
 	//O fator de carga usado sera de 50%, pois costuma trazer bons resultados segundo esses amigo ai: W. Celes e J. L. Rangel
 	int tamanhoTabelaHash = numeroLinhas * 2;
-	HashDic dic(tamanhoTabelaHash);
+	HashDic hashDic(tamanhoTabelaHash);
+
+	AVLDic avlDic(numeroLinhas);
+	
+
 	input.clear();             //clear the buffer
 	input.seekg(0, std::ios::beg);
 
+	//loop principal de captura de dados do input
 	char tipo;
 	string verbete;
-
 	while(getline(input,buffer)){
 		try{
 			//instancia novos verbetes e significados para serem preenchidos com o input
@@ -81,11 +90,16 @@ int main(int argc, char const *argv[]){
 			temp->chave_=verbete;
 			temp->tipo_=tipo;
 			temp->significados_.insereFinal(significado);
-			
-			if(dic.pesquisa(temp->chave_, temp->tipo_)==nullptr){
-				dic.insereVerbete(temp);
-			}else{
-				dic.atualiza(temp);
+
+			if(implementacao=="hash"){
+				if(hashDic.pesquisa(temp->chave_, temp->tipo_)==nullptr){
+					hashDic.insereVerbete(temp);
+				}else{
+					hashDic.atualiza(temp);
+				}
+			}else
+			if(true){
+				avlDic.insereVerbete(temp);
 			}
 
 		}
@@ -93,11 +107,19 @@ int main(int argc, char const *argv[]){
 			std::cout << e.what() << '\n';
 		}
 	} 
-	
-	dic.imprime(output);
-	cout<<dic.getEntradas()<<endl;
+	if(implementacao=="hash"){
+		hashDic.imprime(cout);
+	}else if(true){
+		avlDic.imprime(cout);
+		avlDic.removeVerbete("work", 'v');
+		avlDic.removeVerbete("wonder", 'n');
+		cout<<endl;
+		avlDic.imprime(cout);
+	}
+
+
 
 	input.close();
-	output.close();
+	// output.close();
     return 0;
 }

@@ -34,9 +34,9 @@ void HashDic::insereVerbete(Verbete* it){
 	entradas_++;
 }
 
-void HashDic::removeVerbete(Verbete* it){
-	int index = Hash(it->chave_);
-	tabela_[index].remove(it->chave_);
+void HashDic::removeVerbete(std::string chave, char tipo){
+	int index = Hash(chave);
+	tabela_[index].remove(chave, tipo);
 	entradas_--;
 }
 
@@ -57,6 +57,9 @@ Verbete* HashDic::hashParaVetor() const {
 
 
 void HashDic::imprime(std::ostream& out){
+	if(getEntradas()==0){
+		throw std::range_error("ERRO: Nao eh possivel imprimir um dicionario hash vazio!");
+	}
 	Verbete* vetorHash = hashParaVetor();
 	int numeroEntradas=getEntradas();
 	

@@ -2,12 +2,5 @@ v [wind] wind up, coil the spring of a mechanism
 v [wipe]
 v [withdraw] retreat, pull out
 v [wonder] question, want to know
+n [wonder] to be impressed
 v [work] do work
-v [work out] exercise
-v [worry] be worried
-v [wrap] enfold in a tissue
-v [wrestle] engage in a wrestling match
-v [write] communicate or express by writing
-v [spell] write
-v [compose] write music
-a [wrap] someone too involved in his own shit 

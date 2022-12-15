@@ -55,12 +55,12 @@ class ListaBase{
 		}
 
 		//remove um elemento pela sua chave.
-		void remove(std::string chave){
+		void remove(std::string chave, char tipo){
 			T* iterator;
 			iterator=primeiro_;
 			//testa se o primeiro elemento eh o elemento a ser removido.
 			//Se nao, comecamos a testar a partir do proximo elemento.
-			if(primeiro_->chave_==chave){
+			if(primeiro_->chave_==chave && primeiro_->tipo_==tipo){
 				primeiro_=primeiro_->prox_;
 				delete primeiro_;
 				tamanho_--;
@@ -68,7 +68,7 @@ class ListaBase{
 			}
 
 			//posiciona o iterador na posicao anterior da chave
-			while(iterator->prox_->chave_!=chave && iterator->prox_!=nullptr){
+			while(iterator->prox_->chave_!=chave &&iterator->prox_->tipo_!=tipo&& iterator->prox_!=nullptr){
 				iterator=iterator->prox_;
 			}
 			if(iterator->prox_==nullptr){

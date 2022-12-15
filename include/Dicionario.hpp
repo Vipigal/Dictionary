@@ -16,7 +16,7 @@ class Dicionario{
         virtual void insereVerbete(Verbete * it)=0;
         virtual void imprime(std::ostream& out)=0;
         virtual void atualiza(Verbete * it)=0;
-        virtual void removeVerbete(Verbete * it)=0;
+        virtual void removeVerbete(std::string chave, char tipo)=0;
         virtual ~Dicionario(){};
 
     private:

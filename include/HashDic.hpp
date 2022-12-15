@@ -21,7 +21,7 @@ public:
 	void insereVerbete(Verbete* it);
 	void imprime(std::ostream& out);
 	void atualiza(Verbete* it);
-	void removeVerbete(Verbete* it);
+	void removeVerbete(std::string chave, char tipo);
 	~HashDic();
 
 private:
