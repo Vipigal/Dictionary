@@ -4,6 +4,11 @@ int max(int a, int b){
 	return (a>b)? a : b; 
 }
 
+AVLDic::AVLDic(int N) : Dicionario(N){
+	raiz = nullptr;
+	entradas_=0;
+}
+
 int AVLDic::altura(No* no){
 	if(no==nullptr)
 		return 0;
@@ -27,7 +32,7 @@ No* AVLDic::rotacaoRR(No* pai){
 	aux = pai->dir;
 	pai->dir = aux->esq;
 	aux->esq = pai;
-	std::cout << "rr rotation" << std::endl;
+	// std::cout << "rr rotation" << std::endl;
 	return aux;
 }
 
@@ -52,7 +57,7 @@ No* AVLDic::rotacaoRL(No* pai){
 	No* aux;
 	aux=pai->dir;
 	pai->dir=rotacaoLL(aux);
-	std::cout << "rl rotation" << std::endl;
+	// std::cout << "rl rotation" << std::endl;
 	return rotacaoRR(pai); 
 }
 
@@ -60,7 +65,7 @@ No* AVLDic::rotacaoLR(No* pai){
 	No* aux;
 	aux = pai->esq;
 	pai->esq = rotacaoRR(aux);
-	std::cout << "lr rotation" << std::endl;
+	// std::cout << "lr rotation" << std::endl;
 	return rotacaoLL(pai); 
 }
 
@@ -100,7 +105,6 @@ No* AVLDic::insere(No* no, Verbete* data){
 		novo->ver_=data;
 		novo->dir=nullptr;
 		novo->esq=nullptr;
-		entradas_++;
 		return novo;
 	}
 	//se valor < 0, No deve vir antes no dicionario do que data.
@@ -127,7 +131,6 @@ No* AVLDic::insere(No* no, Verbete* data){
 			atualizaSignificado(data->significados_, no->ver_);
 		}
 	}
-	entradas_++;
 	return no;
 }
 
@@ -143,6 +146,7 @@ void AVLDic::insereVerbete(Verbete* it){
 	if(it == nullptr)
 		throw std::range_error("ERRO: Nao eh possivel inserir um verbete vazio no dicionario!");
 	raiz = insere(raiz, it);
+	entradas_++;
 }
 
 Verbete* AVLDic::pesquisaNo(No* no, std::string chave, char tipo){
@@ -166,7 +170,6 @@ Verbete* AVLDic::pesquisa(std::string chave, char tipo){
 }
 
 void AVLDic::imprime(std::ostream& out){
-
 	inordem(raiz,out);
 }
 //funcao nao sera implementada pois esta imbutida na insere.
@@ -215,6 +218,7 @@ No* AVLDic::deleta(No* no, std::string chave, char tipo){
 
 void AVLDic::removeVerbete(std::string chave, char tipo){
 	raiz = deleta(raiz, chave, tipo);
+	entradas_--;
 }
 
 //Retorna o maior no da arvore.
@@ -230,5 +234,17 @@ No* AVLDic::menor(No* no){
 		no = no->esq;
 
 	return no;
+}
+
+void AVLDic::destroi(No* root){
+	if(root){
+		destroi(root->dir);
+		destroi(root->esq);
+		delete root;
+	}
+}
+
+AVLDic::~AVLDic(){
+	destroi(raiz);
 }
 

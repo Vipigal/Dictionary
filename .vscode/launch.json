@@ -8,7 +8,7 @@
 		"type": "cppdbg",
 		"request": "launch",
 		"program": "${workspaceFolder}/bin/dictionary",
-		"args": [],
+		"args": ["-i","${workspaceFolder}/input.txt","-o","${workspaceFolder}/output.txt","-t","hash"],
 		"stopAtEntry": false,
 		"cwd": "${fileDirname}",
 		"environment": [],

@@ -19,10 +19,7 @@ struct No{
 class AVLDic : public Dicionario{
 	public:
 	//Cria uma instancia de arvore AVL. 
-	AVLDic(int N) : Dicionario(N){
-		raiz = nullptr;
-		entradas_=0;
-	};
+	AVLDic(int N);
 	//Retorna o numero de entradas presentes na arvore.
 	int getEntradas() const {return entradas_;}
 	//Retorna a altura do no.
@@ -65,8 +62,24 @@ class AVLDic : public Dicionario{
     void atualiza(Verbete * it);
 	//Remove um verbete da arvore.
     void removeVerbete(std::string chave, char tipo);
-	//todo implementar ~tree
-	~AVLDic(){}
+	//Destroi a arvore recursivamente.
+	void destroi(No* root);
+	
+	void removeVerbetesComSignificado(No* no, std::ostream& out){
+		if(no == nullptr)
+			return;
+		removeVerbetesComSignificado(no->esq, out);
+		if(no->ver_->significados_.vazia()){
+			out<<no->ver_->chave_<<"("<<no->ver_->tipo_<<")"<<std::endl;
+		}
+		removeVerbetesComSignificado(no->dir, out);
+	}
+	void imprimeSemSig(std::ostream& out){
+		removeVerbetesComSignificado(raiz, out);
+	}
+	No* getRaiz(){return raiz;}
+	//Chama o destrutor.
+	~AVLDic();
 
 	private:
 		No* raiz;

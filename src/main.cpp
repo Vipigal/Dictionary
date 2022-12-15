@@ -37,12 +37,11 @@ int main(int argc, char const *argv[]){
 		}
 	}
 	//testar se as flags de comando sao validas.
-	std::ifstream input("/home/vipigal/Dictionary/input2.txt");
-	// std::ifstream input(nomeArquivoEntrada);
+	std::ifstream input(nomeArquivoEntrada);
 	erroAssert(input, "Nao foi possivel abrir o arquivo de input! Favor inserir entrada valida com a flag -i");
-	// std::ofstream output(nomeArquivoSaida);
-	// erroAssert(output, "Nao foi possivel abrir o arquivo de output! Favor inserir entrada valida com a flag -o");
-	// erroAssert(implementacao=="arv" || implementacao == "hash", "A implementacao desejada deve ser selecionada com a flag -t. Valores validos: hash, arv");
+	std::ofstream output(nomeArquivoSaida);
+	erroAssert(output, "Nao foi possivel abrir o arquivo de output! Favor inserir entrada valida com a flag -o");
+	erroAssert(implementacao=="arv" || implementacao == "hash", "A implementacao desejada deve ser selecionada com a flag -t. Valores validos: hash, arv");
 
 	//Pega o numero de linhas total do arquivo de entrada
 	string buffer;
@@ -50,9 +49,9 @@ int main(int argc, char const *argv[]){
 	while(getline(input,buffer)){
 		numeroLinhas++;
 	}
-
-	//O fator de carga usado sera de 50%, pois costuma trazer bons resultados segundo esses amigo ai: W. Celes e J. L. Rangel
-	int tamanhoTabelaHash = numeroLinhas * 2;
+	
+	//Instancia os dicionarios.
+	int tamanhoTabelaHash = numeroLinhas * 2; //O fator de carga usado sera de 50%, pois costuma trazer bons resultados segundo esses amigo ai: W. Celes e J. L. Rangel
 	HashDic hashDic(tamanhoTabelaHash);
 
 	AVLDic avlDic(numeroLinhas);
@@ -69,28 +68,33 @@ int main(int argc, char const *argv[]){
 			//instancia novos verbetes e significados para serem preenchidos com o input
 			Verbete *temp = new Verbete;
 			Significado* significado = new Significado;
+
 			//declara buffers para guardar pedacos do input
 			std::stringstream s(buffer);
+
 			//pega o tipo do verbete
 			s>>tipo;
+
 			//pega os indices dos delimitadores []
 			unsigned first = buffer.find('[');
 			unsigned last = buffer.find(']');
+
 			//acha o verbete entre os delimitadores
 			verbete = buffer.substr(first+1, last-first-1);
 			verbete=transformaEmMinuscula(verbete);
-			//acha o significado, se houver um
-			if(last+2 > buffer.length()){
-				significado->significado_ = "";
-			}else{
-				significado->significado_ = buffer.substr(last+2);
-			}
-			//cout<<verbete<<" "<<tipo<<" "<<significado->significado_<<endl;
 
+			//acha o significado, se houver um
+			if(last+2 < buffer.length()){
+				significado->significado_ = buffer.substr(last+2);
+				temp->significados_.insereFinal(significado);
+			}
+			
+			//Preenche o verbete temporario com seus atributos
 			temp->chave_=verbete;
 			temp->tipo_=tipo;
-			temp->significados_.insereFinal(significado);
+			
 
+			//Insere o verbete no dicionario dependendo de sua implementacao
 			if(implementacao=="hash"){
 				if(hashDic.pesquisa(temp->chave_, temp->tipo_)==nullptr){
 					hashDic.insereVerbete(temp);
@@ -98,7 +102,7 @@ int main(int argc, char const *argv[]){
 					hashDic.atualiza(temp);
 				}
 			}else
-			if(true){
+			if(implementacao=="arv"){
 				avlDic.insereVerbete(temp);
 			}
 
@@ -107,19 +111,20 @@ int main(int argc, char const *argv[]){
 			std::cout << e.what() << '\n';
 		}
 	} 
+
+	//Imprime o dicionario completo.
 	if(implementacao=="hash"){
-		hashDic.imprime(cout);
-	}else if(true){
-		avlDic.imprime(cout);
-		avlDic.removeVerbete("work", 'v');
-		avlDic.removeVerbete("wonder", 'n');
-		cout<<endl;
-		avlDic.imprime(cout);
+		hashDic.imprime(output);
+		hashDic.removeVerbetesComSignificado();
+		hashDic.imprime(output);
+	}else if(implementacao=="arv"){
+		avlDic.imprime(output);
+		avlDic.imprimeSemSig(output);
 	}
 
 
 
 	input.close();
-	// output.close();
+	output.close();
     return 0;
 }

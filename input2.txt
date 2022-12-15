@@ -1,6 +1,19 @@
-v [wind] wind up, coil the spring of a mechanism
-v [wipe]
-v [withdraw] retreat, pull out
-v [wonder] question, want to know
-n [wonder] to be impressed
-v [work] do work
+v [tolerate] recognize, respect others' rights
+v [toss] flip, pitch, throw
+v [total] damage beyond the point of repair
+v [touch] make physical contact with
+v [train] coach
+v [transfer] transmit, transport, channel
+v [transform] transmute, metamorphose
+v [tread] trample
+v [treat] care for, provide treatment for, treat medically
+v [treat] handle
+v [tremble]
+v [trip] stumble
+v [trouble] perturb, distract, make uneasy
+v [try] sample, try out, taste
+v [try] seek, attempt, essay
+v [try] judge, adjudicate
+v [tumble] topple, fall down
+v [tune] tune up, adjust for (better) functioning
+v [bend] flex, turn, deform, twist

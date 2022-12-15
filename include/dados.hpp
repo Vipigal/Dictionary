@@ -53,6 +53,7 @@ class ListaVerbetes : public ListaBase<T>{
 			}
 			return nullptr;
 		}
+		
 
 
 };

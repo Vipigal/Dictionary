@@ -3,6 +3,11 @@
 
 #define TROCA(A,B){Verbete C=A;A=B;B=C;}
 
+HashDic::HashDic(int N) : Dicionario(N){
+	tabela_ = new ListaVerbetes<Verbete>[N];
+	entradas_=0;
+}
+
 int HashDic::Hash(std::string chave){
 	int hash = 0;
 	int tam = chave.length();
